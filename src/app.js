@@ -54,13 +54,13 @@ app.get('/weather', (req, res) => {
         if(error) return res.send({
             error: error
         })
-        forecast(latitude, longitude, (error, { temperature, feels_like, alerts  } = {}) => {
+        forecast(latitude, longitude, (error, { temperature, feels_like, sunrise, sunset, alerts, current_time  } = {}) => {
             if(error) return res.send({
                 error: error
             })
             const printableData = alerts.sender_name !== undefined ?
-                `${location} - It's currently ${Math.round(temperature)}ºc and it feels like ${Math.round(feels_like)}ºc outside. There is an alert sent by ${alerts.sender_name} about '${alerts.event}'. It says: "${alerts.description}"` :
-                `${location} - It's currently ${Math.round(temperature)}ºc and it feels like ${Math.round(feels_like)}ºc outside.`
+                `${location} - It's currently ${Math.round(temperature)}ºc and it feels like ${Math.round(feels_like)}ºc outside. Right now it's currently ${current_time}. The sunrise time is ${sunrise}, and the sunset time is ${sunset}. There is an alert sent by ${alerts.sender_name} about '${alerts.event}'. It says: "${alerts.description}"` :
+                `${location} - It's currently ${Math.round(temperature)}ºc and it feels like ${Math.round(feels_like)}ºc outside. Right now it's currently ${current_time}. The sunrise time is ${sunrise}, and the sunset time is ${sunset}.`
             res.send({
                 address: req.query.address,
                 location: location,

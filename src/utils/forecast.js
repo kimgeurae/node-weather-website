@@ -9,7 +9,7 @@ const forecast = (latitude, longitude, callback) => {
     fetch(generateOpenWeatherMapUrl(latitude, longitude)).then(res => res.json()).then(({cod, current, alerts}) => {
         if(cod) callback('Unable to find weather for the geolocation data.', undefined)
         else {
-            const { temp: temperature, feels_like } = current
+            const { temp: temperature, feels_like, sunrise, sunset, dt } = current
             let callback_alerts = {
                 sender_name: undefined,
                 event: undefined,
@@ -21,6 +21,9 @@ const forecast = (latitude, longitude, callback) => {
             callback(undefined, {
                 temperature,
                 feels_like,
+                current_time: new Date(dt*1000),
+                sunrise: new Date(sunrise*1000),
+                sunset: new Date(sunset*1000),
                 alerts: callback_alerts
             })
         }
